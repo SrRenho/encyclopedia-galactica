@@ -74,13 +74,16 @@ def query_api():
 def init():
     global init_done
     print("descargando database")
-    download_folder_from_gcs()
+    try:
+        download_folder_from_gcs()
+    except Exception as e:
+        logging.error(f"[GCS] Init thread failed: {e}", exc_info=True)
     print("conectando con la IA")
     query.__init__()
     print("Page ready to use!")
     init_done = True
 
 if __name__ == "__main__":
-    threading.Thread(target=init, daemon=True).start()
+    threading.Thread(target=init).start()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
