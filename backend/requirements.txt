@@ -8,4 +8,4 @@ langchain-together
 langchain-core
 langchain-chroma
 sentence-transformers
-unstructured
+unstructured[md]
