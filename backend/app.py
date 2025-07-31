@@ -7,34 +7,58 @@ import threading
 import json
 from google.cloud import storage
 
-def download_folder_from_gcs(prefix="chroma", local_folder="chroma"):
-    os.makedirs(local_folder, exist_ok=True)
-
-    # Write credentials to a temp file
-    creds = os.environ.get("GCS_CREDENTIALS")
-    if creds:
-        with open("gcloud-creds.json", "w") as f:
-            f.write(creds)
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcloud-creds.json"
-
-    client = storage.Client()
-    bucket = client.bucket("encyclopedia-galactica-chromadb")
-    blobs = bucket.list_blobs(prefix=prefix)
-
-    for blob in blobs:
-        if blob.name.endswith("/"):  # Skip folders
-            continue
-        rel_path = blob.name[len(prefix):].lstrip("/")
-        local_path = os.path.join(local_folder, rel_path)
-        os.makedirs(os.path.dirname(local_path), exist_ok=True)
-        blob.download_to_filename(local_path)
-        print(f"Downloaded {blob.name} to {local_path}")
-
-
 init_done = False
 
 app = Flask(__name__)
 CORS(app)
+
+def download_folder_from_gcs(prefix="chroma", local_folder="chroma"):
+    print("[GCS] Starting folder download")
+    print(f"[GCS] Target local folder: {local_folder}")
+    
+    print("[GCS] Creating local directory if not exists...")
+    os.makedirs(local_folder, exist_ok=True)
+    print("[GCS] Directory ready")
+
+    creds = os.environ.get("GCS_CREDENTIALS")
+    if creds:
+        print("[GCS] Found GCS_CREDENTIALS in environment")
+        print("[GCS] Writing credentials to gcloud-creds.json...")
+        with open("gcloud-creds.json", "w") as f:
+            f.write(creds)
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcloud-creds.json"
+        print("[GCS] Credential file written and environment variable set")
+    else:
+        print("[GCS] WARNING: No GCS_CREDENTIALS found in environment")
+
+    print("[GCS] Initializing storage client...")
+    client = storage.Client()
+    print("[GCS] Client initialized")
+
+    print("[GCS] Getting bucket: encyclopedia-galactica-chromadb")
+    bucket = client.bucket("encyclopedia-galactica-chromadb")
+    print("[GCS] Listing blobs with prefix:", prefix)
+    blobs = bucket.list_blobs(prefix=prefix)
+
+    for blob in blobs:
+        print(f"[GCS] Found blob: {blob.name}")
+        if blob.name.endswith("/"):
+            print(f"[GCS] Skipping folder: {blob.name}")
+            continue
+
+        rel_path = blob.name[len(prefix):].lstrip("/")
+        local_path = os.path.join(local_folder, rel_path)
+
+        print(f"[GCS] Preparing to download: {blob.name}")
+        print(f"[GCS] Local path will be: {local_path}")
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
+
+        print(f"[GCS] Downloading to {local_path}...")
+        blob.download_to_filename(local_path)
+        print(f"[GCS] Downloaded {blob.name} to {local_path}")
+
+    print("[GCS] Folder download complete")
+
 
 @app.route("/query", methods=["POST"])
 def query_api():
