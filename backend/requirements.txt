@@ -1,0 +1,6 @@
+flask
+langchain
+langchain-community
+chromadb
+langchain-huggingface
+langchain-together
