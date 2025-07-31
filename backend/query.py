@@ -7,7 +7,7 @@ from langchain_core.messages import HumanMessage
 CHROMA_PATH = "chroma"
 
 # Use a compact embedding model for free usage (you could use 'sentence-transformers/all-MiniLM-L6-v2')
-EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-MiniLM-L3-v2"
 
 TOGETHER_MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
