@@ -9,3 +9,4 @@ langchain-core
 langchain-chroma
 sentence-transformers
 unstructured[md]
+google-cloud-storage
