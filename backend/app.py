@@ -13,8 +13,5 @@ def query_api():
     return response
 
 if __name__ == "__main__":
-    print("conectando con la IA")
-    query.__init__()
-    print("Page ready to use!")
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
