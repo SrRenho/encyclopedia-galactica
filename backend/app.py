@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_cors import CORS
 import query
+import database
 
 app = Flask(__name__)
 CORS(app)
@@ -13,6 +14,7 @@ def query_api():
     return response
 
 if __name__ == "__main__":
+    database.generate_data_store()
     query.__init__()
     app.run(host="0.0.0.0", port=5000, debug=True)
 
