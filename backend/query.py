@@ -23,7 +23,7 @@ llm = None
 
 def __init__():
     global db, llm
-    embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    embedding_function = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     llm = Together(
