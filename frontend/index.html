@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enciclopedia Galáctica</title>
+</head>
+<body>
+  <h1>Consultá la Enciclopedia Galáctica de Isaac Asimov</h1>
+  <input type="text" id="user_input" style="width:300px;" autofocus autocomplete="off" />
+  <button onclick="send()">Send</button>
+  <p><b>Enciclopedia Galáctica:</b></p>
+  <pre id="response"></pre>
+
+  <script>
+    async function send() {
+      const input = document.getElementById("user_input").value;
+      const res = await fetch("https://flask-backend.onrender.com/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_input: input })
+      });
+      const data = await res.text();
+      document.getElementById("response").innerText = data;
+    }
+  </script>
+</body>
+</html>
