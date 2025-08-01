@@ -11,7 +11,7 @@ TOGETHER_MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 def generate_response(query_text):
     print("received query")
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=SentenceTransformerEmbeddings(model_name=EMBEDDING_MODEL_NAME))
-    print("db object created)
+    print("db object created")
 
     results = db.similarity_search(query_text, k=2)
     print("db searched")
@@ -29,13 +29,14 @@ def generate_response(query_text):
         "Question: {query_text}."
     )
 
-    print("creating llm object)
+    print("creating llm object")
     llm = Together(model=TOGETHER_MODEL_NAME, temperature=0.7, max_tokens=200)
     print("querying llm")
     response_text = llm.invoke(prompt)
 
     print("returning response")
     return f"{response_text}\n\nSources:\n{context_text}"
+
 
 
 
