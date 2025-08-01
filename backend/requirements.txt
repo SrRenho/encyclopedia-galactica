@@ -3,10 +3,8 @@ flask-cors
 langchain
 langchain-community
 chromadb
-langchain-huggingface
 langchain-together
 langchain-core
 langchain-chroma
 sentence-transformers
 unstructured[md]
-google-cloud-storage
