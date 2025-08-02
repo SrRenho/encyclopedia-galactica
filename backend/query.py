@@ -9,10 +9,19 @@ CHROMA_PATH = "chroma"
 EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-MiniLM-L3-v2"
 TOGETHER_MODEL_NAME = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
+print("creating db")
+db = Chroma(persist_directory=CHROMA_PATH, embedding_function=SentenceTransformerEmbeddings(model_name=EMBEDDING_MODEL_NAME))
+print("db created")
+
+print("creating llm")
+llm = Together(model=TOGETHER_MODEL_NAME, temperature=0.7, max_tokens=200)
+print("llm created")
+
+
 def generate_response(query_text, app):
+    global db
+    global llm
     app.logger.info("received query")
-    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=SentenceTransformerEmbeddings(model_name=EMBEDDING_MODEL_NAME))
-    app.logger.info("db object created")
 
     results = db.similarity_search(query_text, k=2)
     app.logger.info("db searched")
@@ -30,13 +39,12 @@ def generate_response(query_text, app):
         "Question: {query_text}."
     )
 
-    app.logger.info("creating llm object")
-    llm = Together(model=TOGETHER_MODEL_NAME, temperature=0.7, max_tokens=200)
     app.logger.info("querying llm")
     response_text = llm.invoke(prompt)
 
     app.logger.info("returning response")
     return f"{response_text}\n\nSources:\n{context_text}"
+
 
 
 
