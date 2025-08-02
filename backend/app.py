@@ -9,10 +9,10 @@ CORS(app, origins=["https://srrenho.github.io/encyclopedia-galactica/"])
 
 @app.route("/query", methods=["POST"])
 def query_api():
-    app.logger.info(“query recibida”)
+    app.logger.info("query recibida")
     data = request.get_json()
     user_input = data.get("user_input", "")
-    app.logger.info(“user input recibido")
+    app.logger.info("user input recibido")
     response = "probando 1 2 3 " #query.generate_response(user_input)
     return response
 
