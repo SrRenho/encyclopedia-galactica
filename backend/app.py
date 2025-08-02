@@ -13,7 +13,7 @@ def query_api():
     data = request.get_json()
     user_input = data.get("user_input", "")
     app.logger.info("user input recibido")
-    response = "probando 1 2 3 " #query.generate_response(user_input)
+    response = query.generate_response(user_input, app)
     return response
 
 if __name__ == "__main__":
