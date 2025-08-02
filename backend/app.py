@@ -5,7 +5,7 @@ import os
 import logging
 
 app = Flask(__name__)
-CORS(app, origins=["https://srrenho.github.io"])
+CORS(app)
 
 @app.route("/query", methods=["POST"])
 def query_api():
