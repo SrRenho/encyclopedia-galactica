@@ -5,7 +5,7 @@ import os
 import logging
 
 app = Flask(__name__)
-CORS(app, origins=["https://srrenho.github.io/encyclopedia-galactica/"])
+CORS(app, origins=["https://srrenho.github.io"])
 
 @app.route("/query", methods=["POST"])
 def query_api():
